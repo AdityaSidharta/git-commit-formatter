@@ -4,7 +4,7 @@ from subprocess import check_output
 
 
 def prepend_branch(msg, branch_name):
-    if branch_name in ["master", "develop"]:
+    if 'master' in branch_name or 'develop' in branch_name or 'dev' in branch_name:
         return msg
     else:
         return "[{}]{}".format(branch_name, msg)
@@ -41,7 +41,7 @@ NAME = "Adi"
 commit_msg_filepath = sys.argv[1]
 with open(commit_msg_filepath, "r") as f:
     commit_msg = str(f.read())
-branch = check_output(["git", "symbolic-ref", "--short", "HEAD"]).strip()
+branch = check_output(["git", "symbolic-ref", "--short", "HEAD"]).strip().decode('utf-8')
 print(branch)
 
 commit_msg = prepend_emoji(commit_msg)
