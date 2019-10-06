@@ -7,32 +7,34 @@ def prepend_branch(msg, branch_name):
     if 'master' in branch_name or 'develop' in branch_name or 'dev' in branch_name:
         return msg
     else:
-        return "[{}]{}".format(branch_name, msg)
+        return "[{}] {}".format(branch_name, msg)
 
 
 def prepend_name(msg, author_name):
     if "[{}]".format(author_name) in msg:
         return msg
     else:
-        return "[{}]{}".format(author_name, msg)
+        return "[{}] {}".format(author_name, msg)
 
 
-def prepend_emoji(msg):
+def append_emoji(msg):
     lower_commit_msg = msg.lower()
     if "bug" in lower_commit_msg:
-        return "{}{}".format(":bug:", msg)
-    elif "feature" or "model" in lower_commit_msg:
-        return "{}{}".format(":bulb:", msg)
+        return "{} {}".format(msg, ":bug:")
+    elif "fix" in lower_commit_msg:
+        return "{} {}".format(msg, ":wrench:")
+    elif "feature" in lower_commit_msg or "model" in lower_commit_msg:
+        return "{} {}".format(msg, ":bulb:")
     elif "refactor" in lower_commit_msg:
-        return "{}{}".format(":recycle:", msg)
+        return "{} {}".format(msg, ":rainbow:")
     elif "version" in lower_commit_msg:
-        return "{}{}".format(":bookmark:", msg)
+        return "{} {}".format(msg, ":bookmark:")
     elif "remove" in lower_commit_msg:
-        return "{}{}".format(":wastebasket:", msg)
+        return "{} {}".format(msg, ":wastebasket:")
     elif "config" in lower_commit_msg:
-        return "{}{}".format(":wrench:", msg)
-    elif "docs" in lower_commit_msg:
-        return "{}{}".format(":books:", msg)
+        return "{} {}".format(msg, ":wrench:")
+    elif "docs" in lower_commit_msg or "documentation" in lower_commit_msg:
+        return "{} {}".format(msg, ":books:")
     else:
         return msg
 
@@ -44,7 +46,7 @@ with open(commit_msg_filepath, "r") as f:
 branch = check_output(["git", "symbolic-ref", "--short", "HEAD"]).strip().decode('utf-8')
 print(branch)
 
-commit_msg = prepend_emoji(commit_msg)
+commit_msg = append_emoji(commit_msg)
 commit_msg = prepend_branch(commit_msg, branch)
 commit_msg = prepend_name(commit_msg, NAME)
 
