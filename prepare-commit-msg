@@ -1,0 +1,52 @@
+#!/usr/bin/env python
+import sys
+from subprocess import check_output
+
+
+def prepend_branch(msg, branch_name):
+    if branch_name in ["master", "develop"]:
+        return msg
+    else:
+        return "[{}]{}".format(branch_name, msg)
+
+
+def prepend_name(msg, author_name):
+    if "[{}]".format(author_name) in msg:
+        return msg
+    else:
+        return "[{}]{}".format(author_name, msg)
+
+
+def append_emoji(msg):
+    lower_commit_msg = msg.lower()
+    if "bug" in lower_commit_msg:
+        return "{} {}".format(msg, ":bug:")
+    elif "feature" or "model" in lower_commit_msg:
+        return "{} {}".format(msg, ":bulb:")
+    elif "refactor" in lower_commit_msg:
+        return "{} {}".format(msg, ":recycle:")
+    elif "version" in lower_commit_msg:
+        return "{} {}".format(msg, ":bookmark:")
+    elif "remove" in lower_commit_msg:
+        return "{} {}".format(msg, ":wastebasket:")
+    elif "config" in lower_commit_msg:
+        return "{} {}".format(msg, ":wrench:")
+    elif "docs" in lower_commit_msg:
+        return "{} {}".format(msg, ":books:")
+    else:
+        return msg
+
+
+NAME = "Adi"
+commit_msg_filepath = sys.argv[1]
+with open(commit_msg_filepath, "r") as f:
+    commit_msg = f.read()
+branch = check_output(["git", "symbolic-ref", "--short", "HEAD"]).strip()
+
+commit_msg = prepend_branch(commit_msg, branch)
+commit_msg = prepend_name(commit_msg, NAME)
+commit_msg = append_emoji(commit_msg)
+
+with open(commit_msg_filepath, "r+") as fh:
+    fh.seek(0, 0)
+    fh.write(commit_msg)
