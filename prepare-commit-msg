@@ -17,24 +17,28 @@ def prepend_name(msg, author_name):
         return "[{}] {}".format(author_name, msg)
 
 
-def append_emoji(msg):
+def prepend_emoji(msg):
     lower_commit_msg = msg.lower()
     if "bug" in lower_commit_msg:
-        return "{} {}".format(msg, ":bug:")
+        return "{} {}".format(":bug:", msg)
     elif "fix" in lower_commit_msg:
-        return "{} {}".format(msg, ":wrench:")
+        return "{} {}".format(":wrench:", msg)
     elif "feature" in lower_commit_msg or "model" in lower_commit_msg:
-        return "{} {}".format(msg, ":bulb:")
+        return "{} {}".format(":bulb:", msg)
     elif "refactor" in lower_commit_msg:
-        return "{} {}".format(msg, ":rainbow:")
+        return "{} {}".format(":rainbow:", msg)
     elif "version" in lower_commit_msg:
-        return "{} {}".format(msg, ":bookmark:")
+        return "{} {}".format(":bookmark:", msg)
     elif "remove" in lower_commit_msg:
-        return "{} {}".format(msg, ":wastebasket:")
+        return "{} {}".format(":wastebasket:", msg)
     elif "config" in lower_commit_msg:
-        return "{} {}".format(msg, ":wrench:")
+        return "{} {}".format(":wrench:", msg)
     elif "docs" in lower_commit_msg or "documentation" in lower_commit_msg:
-        return "{} {}".format(msg, ":books:")
+        return "{} {}".format(":books:", msg)
+    elif "edit" in lower_commit_msg:
+        return "{} {}".format(":pencil2:", msg)
+    elif "add" in lower_commit_msg:
+        return "{} {}".format(":sparkles:", msg)
     else:
         return msg
 
@@ -46,7 +50,7 @@ with open(commit_msg_filepath, "r") as f:
 branch = check_output(["git", "symbolic-ref", "--short", "HEAD"]).strip().decode('utf-8')
 print(branch)
 
-commit_msg = append_emoji(commit_msg)
+commit_msg = prepend_emoji(commit_msg)
 commit_msg = prepend_branch(commit_msg, branch)
 commit_msg = prepend_name(commit_msg, NAME)
 
