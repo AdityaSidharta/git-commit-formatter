@@ -2,13 +2,63 @@
 import sys
 from subprocess import check_output
 
+NAME = "Adi"
+IGNORED_BRANCH_NAMES = [
+    'main',
+    'master',
+    'develop',
+    'dev',
+    'feature',
+    'hotfix'
+]
+EMOJIS = [
+    ("feature", "bulb"),
+    ("model", "buib"),
+    ("bug", "bug"),
+    ("issue", "bug"),
+    ("refactor", "rainbow"),
+    ("version", "bookmark"),
+    ("bump", "bookmark"),
+    ("doc", "books"),
+    ("upgrade", "arrow_double_up"),
+    ("downgrade", "arrow_double_down"),
+    ("prod", "rocket"),
+    ("deploy", "rocket"),
+    ("release", "rocket"),
+    ("submit", "rocket"),
+    ("try", "microscope"),
+    ("merge", "twisted_rightwards_arrows"),
+    ("first", "baby"),
+    ("initial", "baby"),
+    ("clean", "broom"),
+    ("remove", "wastebasket"),
+    ("delete", "wastebasket"),
+    ("format", "lipstick"),
+    ("test", "test_tube"),
+    ("move", "truck"),
+    ("update", "hammer"),
+    ("improve", "hammer"),
+    ("build", "hammer"),
+    ("fix", "wrench"),
+    ("correct", "wrench"),
+    ("finish", "heavy_check_mark"),
+    ("complete", "heavy_check_mark"),
+    ("edit", "pencil2"),
+    ("change", "pencil2"),
+    ("rename", "pencil2"),
+    ("convert", "pencil2"),
+    ("modify", "pencil2"),
+    ("typo", "pencil2"),
+    ("add", "sparkles"),
+    ("start", "sparkles"),
+    ("create", "sparkles"),
+]
 
 def prepend_branch(msg, branch_name):
-    if 'master' in branch_name or 'develop' in branch_name or 'dev' in branch_name:
+    if branch_name in IGNORED_BRANCH_NAMES:
         return msg
     else:
         return "[{}] {}".format(branch_name, msg)
-
 
 def prepend_name(msg, author_name):
     if "[{}]".format(author_name) in msg:
@@ -16,52 +66,21 @@ def prepend_name(msg, author_name):
     else:
         return "[{}] {}".format(author_name, msg)
 
-
 def prepend_emoji(msg):
     lower_commit_msg = msg.lower()
-    if "bug" in lower_commit_msg:
-        return "{} {}".format(":bug:", msg)
-    elif "feature" in lower_commit_msg or "model" in lower_commit_msg:
-        return "{} {}".format(":bulb:", msg)
-    elif "refactor" in lower_commit_msg:
-        return "{} {}".format(":rainbow:", msg)
-    elif "version" in lower_commit_msg:
-        return "{} {}".format(":bookmark:", msg)
-    elif "docs" in lower_commit_msg or "documentation" in lower_commit_msg:
-        return "{} {}".format(":books:", msg)
-    elif "first" in lower_commit_msg:
-        return "{} {}".format(":one:", msg)
-    elif "edit"  in lower_commit_msg:
-        return "{} {}".format(":pencil2:", msg)
-    elif "update"  in lower_commit_msg:
-        return "{} {}".format(":pencil2:", msg)
-    elif "change"  in lower_commit_msg:
-        return "{} {}".format(":pencil2:", msg)
-    elif "add" in lower_commit_msg:
-        return "{} {}".format(":sparkles:", msg)
-    elif "fix" in lower_commit_msg:
-        return "{} {}".format(":wrench:", msg)
-    elif "clean" in lower_commit_msg:
-        return "{} {}".format(":broom:", msg)
-    elif "remove" in lower_commit_msg:
-        return "{} {}".format(":wastebasket:", msg)
-    elif "format" in lower_commit_msg:
-        return "{} {}".format(":lipstick:", msg)
-    else:
-        return msg
+    for infix, emoji in EMOJIS:
+        if infix in lower_commit_msg:
+            return "{} {}".format(":{}:".format(emoji), msg)
+    return msg
 
-
-NAME = "Adi"
 commit_msg_filepath = sys.argv[1]
 with open(commit_msg_filepath, "r") as f:
     commit_msg = str(f.read())
 branch = check_output(["git", "symbolic-ref", "--short", "HEAD"]).strip().decode('utf-8')
-print(branch)
 
 commit_msg = prepend_emoji(commit_msg)
 commit_msg = prepend_branch(commit_msg, branch)
 commit_msg = prepend_name(commit_msg, NAME)
-
 
 with open(commit_msg_filepath, "w") as fh:
     fh.seek(0, 0)
