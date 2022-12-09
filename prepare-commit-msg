@@ -21,24 +21,32 @@ def prepend_emoji(msg):
     lower_commit_msg = msg.lower()
     if "bug" in lower_commit_msg:
         return "{} {}".format(":bug:", msg)
-    elif "fix" in lower_commit_msg:
-        return "{} {}".format(":wrench:", msg)
     elif "feature" in lower_commit_msg or "model" in lower_commit_msg:
         return "{} {}".format(":bulb:", msg)
     elif "refactor" in lower_commit_msg:
         return "{} {}".format(":rainbow:", msg)
     elif "version" in lower_commit_msg:
         return "{} {}".format(":bookmark:", msg)
-    elif "remove" in lower_commit_msg:
-        return "{} {}".format(":wastebasket:", msg)
-    elif "config" in lower_commit_msg:
-        return "{} {}".format(":wrench:", msg)
     elif "docs" in lower_commit_msg or "documentation" in lower_commit_msg:
         return "{} {}".format(":books:", msg)
-    elif "edit" in lower_commit_msg:
+    elif "first" in lower_commit_msg:
+        return "{} {}".format(":one:", msg)
+    elif "edit"  in lower_commit_msg:
+        return "{} {}".format(":pencil2:", msg)
+    elif "update"  in lower_commit_msg:
+        return "{} {}".format(":pencil2:", msg)
+    elif "change"  in lower_commit_msg:
         return "{} {}".format(":pencil2:", msg)
     elif "add" in lower_commit_msg:
         return "{} {}".format(":sparkles:", msg)
+    elif "fix" in lower_commit_msg:
+        return "{} {}".format(":wrench:", msg)
+    elif "clean" in lower_commit_msg:
+        return "{} {}".format(":broom:", msg)
+    elif "remove" in lower_commit_msg:
+        return "{} {}".format(":wastebasket:", msg)
+    elif "format" in lower_commit_msg:
+        return "{} {}".format(":lipstick:", msg)
     else:
         return msg
 
