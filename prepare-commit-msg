@@ -33,7 +33,7 @@ EMOJIS = [
     ("clean", "broom"),
     ("remove", "wastebasket"),
     ("delete", "wastebasket"),
-    ("reformat", "lipstick"),
+    ("reformat", "rainbow"),
     ("test", "test_tube"),
     ("move", "truck"),
     ("update", "hammer"),
